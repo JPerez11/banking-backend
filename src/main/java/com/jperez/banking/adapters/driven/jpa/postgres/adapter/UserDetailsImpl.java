@@ -1,6 +1,6 @@
-package com.jperez.banking.adapters.driven.jpa.sqlserver.adapter;
+package com.jperez.banking.adapters.driven.jpa.postgres.adapter;
 
-import com.jperez.banking.adapters.driven.jpa.sqlserver.entities.UserEntity;
+import com.jperez.banking.adapters.driven.jpa.postgres.entities.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

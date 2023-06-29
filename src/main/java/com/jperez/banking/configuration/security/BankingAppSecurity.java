@@ -1,25 +1,28 @@
 package com.jperez.banking.configuration.security;
 
+import com.jperez.banking.configuration.security.jwt.JwtAuthorizationFilter;
+import com.jperez.banking.configuration.security.jwt.JwtEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class BankingAppSecurity {
+
+    private final JwtEntryPoint jwtEntryPoint;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
@@ -33,6 +36,11 @@ public class BankingAppSecurity {
     }
 
     @Bean
+    public JwtAuthorizationFilter jwtAuthorizationFilter() {
+        return new JwtAuthorizationFilter();
+    }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .cors(AbstractHttpConfigurer::disable)
@@ -41,11 +49,15 @@ public class BankingAppSecurity {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requestMarcher ->
                         requestMarcher
-                                .requestMatchers("/auth/login")
+                                .requestMatchers("/auth/login", "/users/insert")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
+                .exceptionHandling( exceptionHandling ->
+                        exceptionHandling.authenticationEntryPoint(jwtEntryPoint)
+                )
+                .addFilterBefore(jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
