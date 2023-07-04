@@ -1,5 +1,6 @@
 package com.jperez.banking.configuration;
 
+import com.jperez.banking.adapters.driven.jpa.postgres.exceptions.LoadUserException;
 import com.jperez.banking.configuration.security.exception.TokenException;
 import com.jperez.banking.domain.exceptions.DocumentNumberAlreadyExistsException;
 import com.jperez.banking.domain.exceptions.EmailAlreadyExistsException;
@@ -75,6 +76,15 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(
                         Constants.ERROR_MESSAGE,
                         Constants.TOKEN_EXCEPTION_MESSAGE
+                ));
+    }
+
+    @ExceptionHandler(LoadUserException.class)
+    public ResponseEntity<Map<String, String>> handleLoadUserException() {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(Collections.singletonMap(
+                        Constants.ERROR_MESSAGE,
+                        Constants.LOAD_USER_ERROR_MESSAGE
                 ));
     }
 

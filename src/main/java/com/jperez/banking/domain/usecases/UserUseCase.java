@@ -4,6 +4,7 @@ import com.jperez.banking.domain.api.UserServicePort;
 import com.jperez.banking.domain.exceptions.DocumentNumberAlreadyExistsException;
 import com.jperez.banking.domain.exceptions.EmailAlreadyExistsException;
 import com.jperez.banking.domain.exceptions.PasswordNoMatchException;
+import com.jperez.banking.domain.exceptions.UserNotFoundException;
 import com.jperez.banking.domain.models.UserModel;
 import com.jperez.banking.domain.spi.RolePersistencePort;
 import com.jperez.banking.domain.spi.UserPersistencePort;
@@ -44,12 +45,20 @@ public class UserUseCase implements UserServicePort {
 
     @Override
     public UserModel getUser(Long userId) {
-        return userPersistencePort.getUser(userId);
+        UserModel user = userPersistencePort.getUser(userId);
+        if (user == null) {
+            throw new UserNotFoundException();
+        }
+        return user;
     }
 
     @Override
     public List<UserModel> listUsers() {
-        return userPersistencePort.listUsers();
+        List<UserModel> users = userPersistencePort.listUsers();
+        if (users.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+        return users;
     }
 
     // Method to validate

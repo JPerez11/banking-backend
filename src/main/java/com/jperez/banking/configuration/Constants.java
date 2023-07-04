@@ -5,6 +5,7 @@ public class Constants {
     public static final String RESPONSE_MESSAGE = "response";
     public static final String ERROR_MESSAGE = "error";
     public static final String WRONG_CREDENTIALS = "Wrong credentials";
+    public static final String LOAD_USER_ERROR_MESSAGE = "Error loading user";
     public static final String DOCUMENT_NUMBER_ALREADY_EXISTS_MESSAGE = "There is already a user with the document " +
             "number provided";
     public static final String EMAIL_ALREADY_EXISTS_MESSAGE = "There is already a user with the email provided";
