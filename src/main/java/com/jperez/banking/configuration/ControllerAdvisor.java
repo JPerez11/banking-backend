@@ -5,6 +5,7 @@ import com.jperez.banking.configuration.security.exception.TokenException;
 import com.jperez.banking.domain.exceptions.DocumentNumberAlreadyExistsException;
 import com.jperez.banking.domain.exceptions.EmailAlreadyExistsException;
 import com.jperez.banking.domain.exceptions.PasswordNoMatchException;
+import com.jperez.banking.domain.exceptions.UserAlreadyHasAccountException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
@@ -61,6 +62,7 @@ public class ControllerAdvisor {
                         Constants.EMAIL_ALREADY_EXISTS_MESSAGE
                 ));
     }
+
     @ExceptionHandler(PasswordNoMatchException.class)
     public ResponseEntity<Map<String, String>> handlePasswordNoMatchException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -85,6 +87,15 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(
                         Constants.ERROR_MESSAGE,
                         Constants.LOAD_USER_ERROR_MESSAGE
+                ));
+    }
+
+    @ExceptionHandler(UserAlreadyHasAccountException.class)
+    public ResponseEntity<Map<String, String>> handleUserAlreadyHasAccountExistsException() {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap(
+                        Constants.ERROR_MESSAGE,
+                        Constants.USER_ALREADY_HAS_ACCOUNT_MESSAGE
                 ));
     }
 

@@ -10,6 +10,7 @@ public class Constants {
             "number provided";
     public static final String EMAIL_ALREADY_EXISTS_MESSAGE = "There is already a user with the email provided";
     public static final String PASSWORD_NO_MATCH_MESSAGE = "Passwords provided do not match";
+    public static final String USER_ALREADY_HAS_ACCOUNT_MESSAGE = "The user already has an account";
 
     // Exception JwtToken
     public static final String TOKEN_EXCEPTION_MESSAGE = "Token error";
