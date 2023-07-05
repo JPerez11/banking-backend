@@ -49,7 +49,8 @@ public class BankingAppSecurity {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requestMarcher ->
                         requestMarcher
-                                .requestMatchers("/auth/login", "/users/insert")
+                                .requestMatchers("/auth/login", "/users/insert", "/swagger-ui.html",
+                                        "/swagger-ui/**", "/v3/api-docs/**")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
